@@ -1,0 +1,33 @@
+name: Next JS artifacts and caching
+
+on: 
+   push:
+      branches: [ main ]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+       - name: Checkout repository
+         uses: actions/checkout@v6.0.2
+
+       - name: Setup Node js
+         uses: actions/setup-node@v6.1.0
+         with:
+           node-version : 22.x
+           cache: "npm"
+           
+
+        - name: Install Dependencies
+          run: npm install
+
+        - name: "build nextjs app"
+          run: npm run build
+
+        - name: upload build artifacts
+          uses: nichevision/sharefile-upload-artifact@v1.4
+          with: 
+            name: next js.build
+            path: out/
